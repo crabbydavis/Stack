@@ -10,6 +10,61 @@ import Foundation
 import MapKit
 import CoreLocation
 
+class GeofenceSetupViewController: UIViewController, UITextFieldDelegate {
+    
+    @IBOutlet weak var addressTextField: UITextField!
+    @IBAction func addressSubmit(_ sender: UITextField) {
+        
+        // Do something with the address
+    }
+    @IBAction func useLocationButton(_ sender: UIButton) {
+    }
+    
+    @IBAction func cancelGeofence(_ sender: UIButton) {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        initUI()
+        addressTextField.delegate = self
+    }
+    
+    func initUI(){
+         addressTextField.layer.borderWidth = 1
+         addressTextField.layer.borderColor = UIColor.white.cgColor
+         addressTextField.attributedPlaceholder = NSAttributedString(string: "Enter Address",
+         attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray])
+    }
+    
+    //////////////////////////////////////////////////////////
+    //MARK:- TextField Delegate Methods
+    /*
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        //bottomView.backgroundColor = UIColor.black
+        
+        UIView.animate(withDuration: 0.5){
+            self.bottomViewTopConstraint.constant = -100
+            //self.textFieldTopConstraint.constant = self.textFieldTopConstraint.constant - 65
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    //TODO: Declare textFieldDidEndEditing here:
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        //bottomView.backgroundColor = UIColor.clear
+        UIView.animate(withDuration: 0.5){
+            self.bottomViewTopConstraint.constant = 0
+            self.view.layoutIfNeeded()
+        }
+    }*/
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        addressTextField.endEditing(true)
+        return true
+    }
+}
+
 class GeofenceViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate {
 
     @IBOutlet weak var mapView: MKMapView!
@@ -24,24 +79,15 @@ class GeofenceViewController: UIViewController, MKMapViewDelegate, CLLocationMan
     @IBAction func nameSubmit(_ sender: UITextField) {
         // Set this to the geofence title
     }
-    @IBOutlet weak var textFieldHeightConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var textFieldTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var bottomViewTopConstraint: NSLayoutConstraint!
     @IBAction func cancelPushed(_ sender: UIButton) {
-        navigationController?.popViewController(animated: true)
+        navigationController?.popToRootViewController(animated: true)
     }
     
     @IBOutlet weak var bottomView: UIView!
-    /////////////////////////////
-    // Variables for initial view
-    @IBOutlet weak var addressTextField: UITextField!
-    @IBAction func addressSubmit(_ sender: UITextField) {
-        // Do something with the address
-    }
     
-    
-    /////////////////////////////
     
     let locationManager = CLLocationManager()
     let homeAnnotation = MKPointAnnotation()
@@ -64,12 +110,6 @@ class GeofenceViewController: UIViewController, MKMapViewDelegate, CLLocationMan
         nameTextField.layer.borderColor = UIColor.white.cgColor
         nameTextField.attributedPlaceholder = NSAttributedString(string: "Name Geofence",
                                                                attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray])
-        /*
-        addressTextField.layer.borderWidth = 1
-        addressTextField.layer.borderColor = UIColor.white.cgColor
-        addressTextField.attributedPlaceholder = NSAttributedString(string: "Enter Address",
-                                                                 attributes: [NSAttributedStringKey.foregroundColor: UIColor.lightGray])
-        */
     }
     
     func initLocationManager(){
@@ -130,7 +170,6 @@ class GeofenceViewController: UIViewController, MKMapViewDelegate, CLLocationMan
         //bottomView.backgroundColor = UIColor.black
 
         UIView.animate(withDuration: 0.5){
-            //self.textFieldHeightConstraint.constant = 100
             self.bottomViewTopConstraint.constant = -100
             //self.textFieldTopConstraint.constant = self.textFieldTopConstraint.constant - 65
             self.view.layoutIfNeeded()
@@ -141,7 +180,6 @@ class GeofenceViewController: UIViewController, MKMapViewDelegate, CLLocationMan
     func textFieldDidEndEditing(_ textField: UITextField) {
         //bottomView.backgroundColor = UIColor.clear
         UIView.animate(withDuration: 0.5){
-            //self.textFieldHeightConstraint.constant = 45
             self.bottomViewTopConstraint.constant = 0
             self.view.layoutIfNeeded()
         }

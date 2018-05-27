@@ -7,3 +7,17 @@
 //
 
 import Foundation
+import UIKit
+
+class CustomTabBar: UITabBar{
+
+    override func sizeThatFits(_ size: CGSize) -> CGSize {
+        super.sizeThatFits(size)
+        guard let window = UIApplication.shared.keyWindow else {
+            return super.sizeThatFits(size)
+        }
+        var sizeThatFits = super.sizeThatFits(size)
+        sizeThatFits.height = window.safeAreaInsets.bottom + 70
+        return sizeThatFits
+    }
+}

@@ -16,9 +16,17 @@
 		76272DAD20B146940089F750 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 76272DAC20B146940089F750 /* Assets.xcassets */; };
 		76272DAF20B146B20089F750 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 76272DAE20B146B20089F750 /* LaunchScreen.storyboard */; };
 		76272DB120B146C30089F750 /* cow1.wav in Resources */ = {isa = PBXBuildFile; fileRef = 76272DB020B146C30089F750 /* cow1.wav */; };
+		76272DB320B150060089F750 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76272DB220B150060089F750 /* HomeViewController.swift */; };
+		76272DB520B150180089F750 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76272DB420B150180089F750 /* SettingsViewController.swift */; };
+		76272DB720B150300089F750 /* StacksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76272DB620B150300089F750 /* StacksViewController.swift */; };
+		76272DB920B39BAD0089F750 /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76272DB820B39BAD0089F750 /* CustomTabBar.swift */; };
+		76272DBC20B51F010089F750 /* AddTrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76272DBB20B51F010089F750 /* AddTrackerViewController.swift */; };
+		7646EB6720B779C900566100 /* StackDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7646EB6620B779C900566100 /* StackDetailsViewController.swift */; };
+		820D77788A6F6D1FBE6EEA3B /* Pods_Stack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF87E347275FA84E037CF8CB /* Pods_Stack.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4AF90711ABBCCE73DBB58AC3 /* Pods-Stack.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stack.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Stack/Pods-Stack.debug.xcconfig"; sourceTree = "<group>"; };
 		76272D8820B145470089F750 /* Stack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		76272D9720B145490089F750 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		76272DA020B146090089F750 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
@@ -30,6 +38,14 @@
 		76272DAC20B146940089F750 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		76272DAE20B146B20089F750 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		76272DB020B146C30089F750 /* cow1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = cow1.wav; sourceTree = "<group>"; };
+		76272DB220B150060089F750 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		76272DB420B150180089F750 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		76272DB620B150300089F750 /* StacksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StacksViewController.swift; sourceTree = "<group>"; };
+		76272DB820B39BAD0089F750 /* CustomTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
+		76272DBB20B51F010089F750 /* AddTrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTrackerViewController.swift; sourceTree = "<group>"; };
+		7646EB6620B779C900566100 /* StackDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackDetailsViewController.swift; sourceTree = "<group>"; };
+		88EE0AF87463CE3ACED3C494 /* Pods-Stack.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stack.release.xcconfig"; path = "Pods/Target Support Files/Pods-Stack/Pods-Stack.release.xcconfig"; sourceTree = "<group>"; };
+		AF87E347275FA84E037CF8CB /* Pods_Stack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Stack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,17 +53,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				820D77788A6F6D1FBE6EEA3B /* Pods_Stack.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		12AAB1540DC29AC49DEAF329 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				4AF90711ABBCCE73DBB58AC3 /* Pods-Stack.debug.xcconfig */,
+				88EE0AF87463CE3ACED3C494 /* Pods-Stack.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		3F2F00D0E09CE233A110C798 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				AF87E347275FA84E037CF8CB /* Pods_Stack.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		76272D7F20B145470089F750 = {
 			isa = PBXGroup;
 			children = (
 				76272D8A20B145470089F750 /* Stack */,
 				76272D8920B145470089F750 /* Products */,
+				12AAB1540DC29AC49DEAF329 /* Pods */,
+				3F2F00D0E09CE233A110C798 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -86,6 +122,7 @@
 				76272DAE20B146B20089F750 /* LaunchScreen.storyboard */,
 				76272DA020B146090089F750 /* Main.storyboard */,
 				76272DAC20B146940089F750 /* Assets.xcassets */,
+				76272DB820B39BAD0089F750 /* CustomTabBar.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -96,6 +133,11 @@
 				76272DA320B146320089F750 /* AppDelegate.swift */,
 				76272DA420B146320089F750 /* GeofenceViewController.swift */,
 				76272DA220B146320089F750 /* ViewController.swift */,
+				76272DB220B150060089F750 /* HomeViewController.swift */,
+				76272DB420B150180089F750 /* SettingsViewController.swift */,
+				76272DB620B150300089F750 /* StacksViewController.swift */,
+				76272DBB20B51F010089F750 /* AddTrackerViewController.swift */,
+				7646EB6620B779C900566100 /* StackDetailsViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -107,9 +149,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 76272D9A20B145490089F750 /* Build configuration list for PBXNativeTarget "Stack" */;
 			buildPhases = (
+				58F541CFB9AAC668629A41C0 /* [CP] Check Pods Manifest.lock */,
 				76272D8420B145470089F750 /* Sources */,
 				76272D8520B145470089F750 /* Frameworks */,
 				76272D8620B145470089F750 /* Resources */,
+				67EF75444E92E7D5532A98D7 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -172,16 +216,61 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		58F541CFB9AAC668629A41C0 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Stack-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		67EF75444E92E7D5532A98D7 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Stack/Pods-Stack-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Stack/Pods-Stack-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		76272D8420B145470089F750 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7646EB6720B779C900566100 /* StackDetailsViewController.swift in Sources */,
 				76272DAA20B1464A0089F750 /* Tracker.swift in Sources */,
 				76272DA620B146320089F750 /* AppDelegate.swift in Sources */,
+				76272DB520B150180089F750 /* SettingsViewController.swift in Sources */,
 				76272DAB20B1464A0089F750 /* Trackers.swift in Sources */,
+				76272DB920B39BAD0089F750 /* CustomTabBar.swift in Sources */,
+				76272DBC20B51F010089F750 /* AddTrackerViewController.swift in Sources */,
 				76272DA520B146320089F750 /* ViewController.swift in Sources */,
+				76272DB720B150300089F750 /* StacksViewController.swift in Sources */,
 				76272DA720B146320089F750 /* GeofenceViewController.swift in Sources */,
+				76272DB320B150060089F750 /* HomeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -304,6 +393,7 @@
 		};
 		76272D9B20B145490089F750 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4AF90711ABBCCE73DBB58AC3 /* Pods-Stack.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -322,6 +412,7 @@
 		};
 		76272D9C20B145490089F750 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 88EE0AF87463CE3ACED3C494 /* Pods-Stack.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
