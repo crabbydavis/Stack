@@ -22,6 +22,12 @@
 		76272DB920B39BAD0089F750 /* CustomTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76272DB820B39BAD0089F750 /* CustomTabBar.swift */; };
 		76272DBC20B51F010089F750 /* AddTrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76272DBB20B51F010089F750 /* AddTrackerViewController.swift */; };
 		7646EB6720B779C900566100 /* StackDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7646EB6620B779C900566100 /* StackDetailsViewController.swift */; };
+		7666855920BA819B00C797BB /* AddStackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7666855820BA819B00C797BB /* AddStackViewController.swift */; };
+		7666855B20BC868700C797BB /* CamerHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7666855A20BC868700C797BB /* CamerHandler.swift */; };
+		7666855D20BD105400C797BB /* Checklist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7666855C20BD105400C797BB /* Checklist.swift */; };
+		7666855F20BD106200C797BB /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7666855E20BD106200C797BB /* Stack.swift */; };
+		7666856120BD11B200C797BB /* StacksManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7666856020BD11B200C797BB /* StacksManager.swift */; };
+		7666856320BD122500C797BB /* Geofence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7666856220BD122500C797BB /* Geofence.swift */; };
 		820D77788A6F6D1FBE6EEA3B /* Pods_Stack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF87E347275FA84E037CF8CB /* Pods_Stack.framework */; };
 /* End PBXBuildFile section */
 
@@ -44,6 +50,12 @@
 		76272DB820B39BAD0089F750 /* CustomTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabBar.swift; sourceTree = "<group>"; };
 		76272DBB20B51F010089F750 /* AddTrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTrackerViewController.swift; sourceTree = "<group>"; };
 		7646EB6620B779C900566100 /* StackDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackDetailsViewController.swift; sourceTree = "<group>"; };
+		7666855820BA819B00C797BB /* AddStackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddStackViewController.swift; sourceTree = "<group>"; };
+		7666855A20BC868700C797BB /* CamerHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CamerHandler.swift; sourceTree = "<group>"; };
+		7666855C20BD105400C797BB /* Checklist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Checklist.swift; sourceTree = "<group>"; };
+		7666855E20BD106200C797BB /* Stack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stack.swift; sourceTree = "<group>"; };
+		7666856020BD11B200C797BB /* StacksManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StacksManager.swift; sourceTree = "<group>"; };
+		7666856220BD122500C797BB /* Geofence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Geofence.swift; sourceTree = "<group>"; };
 		88EE0AF87463CE3ACED3C494 /* Pods-Stack.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stack.release.xcconfig"; path = "Pods/Target Support Files/Pods-Stack/Pods-Stack.release.xcconfig"; sourceTree = "<group>"; };
 		AF87E347275FA84E037CF8CB /* Pods_Stack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Stack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -112,6 +124,11 @@
 			children = (
 				76272DA820B1464A0089F750 /* Tracker.swift */,
 				76272DA920B1464A0089F750 /* Trackers.swift */,
+				7666855A20BC868700C797BB /* CamerHandler.swift */,
+				7666855C20BD105400C797BB /* Checklist.swift */,
+				7666855E20BD106200C797BB /* Stack.swift */,
+				7666856020BD11B200C797BB /* StacksManager.swift */,
+				7666856220BD122500C797BB /* Geofence.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -138,6 +155,7 @@
 				76272DB620B150300089F750 /* StacksViewController.swift */,
 				76272DBB20B51F010089F750 /* AddTrackerViewController.swift */,
 				7646EB6620B779C900566100 /* StackDetailsViewController.swift */,
+				7666855820BA819B00C797BB /* AddStackViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -243,10 +261,12 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Stack/Pods-Stack-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/Toaster/Toaster.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Toaster.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -261,12 +281,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				7646EB6720B779C900566100 /* StackDetailsViewController.swift in Sources */,
+				7666855F20BD106200C797BB /* Stack.swift in Sources */,
+				7666856120BD11B200C797BB /* StacksManager.swift in Sources */,
 				76272DAA20B1464A0089F750 /* Tracker.swift in Sources */,
 				76272DA620B146320089F750 /* AppDelegate.swift in Sources */,
 				76272DB520B150180089F750 /* SettingsViewController.swift in Sources */,
 				76272DAB20B1464A0089F750 /* Trackers.swift in Sources */,
+				7666855B20BC868700C797BB /* CamerHandler.swift in Sources */,
+				7666855D20BD105400C797BB /* Checklist.swift in Sources */,
+				7666855920BA819B00C797BB /* AddStackViewController.swift in Sources */,
 				76272DB920B39BAD0089F750 /* CustomTabBar.swift in Sources */,
 				76272DBC20B51F010089F750 /* AddTrackerViewController.swift in Sources */,
+				7666856320BD122500C797BB /* Geofence.swift in Sources */,
 				76272DA520B146320089F750 /* ViewController.swift in Sources */,
 				76272DB720B150300089F750 /* StacksViewController.swift in Sources */,
 				76272DA720B146320089F750 /* GeofenceViewController.swift in Sources */,
@@ -403,10 +429,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.crabbydavis.Stack;
+				PRODUCT_BUNDLE_IDENTIFIER = com.stackntrack.stack;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -422,10 +448,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.crabbydavis.Stack;
+				PRODUCT_BUNDLE_IDENTIFIER = com.stackntrack.stack;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

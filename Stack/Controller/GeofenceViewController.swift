@@ -9,6 +9,7 @@
 import Foundation
 import MapKit
 import CoreLocation
+import Toaster
 
 class GeofenceSetupViewController: UIViewController, UITextFieldDelegate {
     
@@ -82,12 +83,30 @@ class GeofenceViewController: UIViewController, MKMapViewDelegate, CLLocationMan
     
     @IBOutlet weak var textFieldTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var bottomViewTopConstraint: NSLayoutConstraint!
+    
     @IBAction func cancelPushed(_ sender: UIButton) {
         navigationController?.popToRootViewController(animated: true)
     }
     
     @IBOutlet weak var bottomView: UIView!
     
+    @IBAction func saveGeofence(_ sender: UIButton) {
+        //StacksManager.geofences.updateValue(<#T##value: Geofence##Geofence#>, forKey: <#T##String#>)
+        if let visualGeofence = geofenceCircle {
+            let region = CLCircularRegion(center: visualGeofence.coordinate, radius: visualGeofence.radius, identifier: nameTextField.text!)
+            let geofence = Geofence(insideGeofence: false, circularRegion: region)
+            StacksManager.geofences.updateValue(geofence, forKey: nameTextField.text!)
+            
+            ToastView.appearance().bottomOffsetPortrait = CGFloat(UIScreen.main.bounds.height * 0.5)
+            ToastView.appearance().font = UIFont.systemFont(ofSize: 20)//UIFont(descriptor: "Roboto", size: 20)
+            ToastView.appearance().backgroundColor = UIColor(red:0.12, green:0.76, blue:0.65, alpha:1.0)//1FC3A6
+            ToastView.appearance().textColor = UIColor.white
+            let toast = Toast(text: "Geofence Saved", duration: Delay.short)
+            toast.show()
+            
+            navigationController?.popToRootViewController(animated: true)
+        }
+    }
     
     let locationManager = CLLocationManager()
     let homeAnnotation = MKPointAnnotation()
@@ -104,8 +123,6 @@ class GeofenceViewController: UIViewController, MKMapViewDelegate, CLLocationMan
     }
     
     func initUI(){
-        //sliderView.layer.borderWidth = 1
-        //sliderView.layer.borderColor = UIColor.white.cgColor
         nameTextField.layer.borderWidth = 1
         nameTextField.layer.borderColor = UIColor.white.cgColor
         nameTextField.attributedPlaceholder = NSAttributedString(string: "Name Geofence",
@@ -114,6 +131,8 @@ class GeofenceViewController: UIViewController, MKMapViewDelegate, CLLocationMan
     
     func initLocationManager(){
         locationManager.delegate = self
+        //locationManager.requestAlwaysAuthorization() // Requesting to always have access to location
+        locationManager.allowsBackgroundLocationUpdates = true
         locationManager.distanceFilter = kCLLocationAccuracyKilometer
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
     }

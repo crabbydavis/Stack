@@ -7,5 +7,6 @@ target 'Stack' do
 
   # Pods for Stack
     pod 'SVProgressHUD'
+    pod 'Toaster'
 
 end

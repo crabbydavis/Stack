@@ -11,62 +11,112 @@ import UIKit
 
 class StackDetailsViewController: UIViewController {
     
+    @IBAction func cancelPushed(_ sender: UIButton) {
+        navigationController?.popToRootViewController(animated: true)
+    }
     @IBOutlet weak var trackersStackView: UIStackView!
     @IBOutlet weak var checklistStackView: UIStackView!
-    @IBOutlet weak var trackersHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var trackersHeight: NSLayoutConstraint!
+    @IBOutlet weak var checklistHeight: NSLayoutConstraint!
+    var trackers = [String]()//["Gloves","Goggles","Gloves","Goggles"]//,"Boots","Helmet","Snowboard"]
+    var checklist = [String]()//["Pass", "Glasses"]
+    var stackName: String = ""
+    var stack: Stack?
     
-    let trackers = ["Gloves","Goggles","Gloves","Goggles"]//,"Boots","Helmet","Snowboard"]
-    let checklist = ["Pass", "Glasses"]
-    
+    @IBOutlet weak var viewTitle: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
+        //initUI()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        if let stack = StacksManager.stacks[stackName] {
+            for (identifier, _) in  stack.trackers {
+                trackers.append(identifier)
+            }
+            for (identifier, _) in  stack.checklist {
+                checklist.append(identifier)
+            }
+        }
         initUI()
     }
     
     func initUI(){
-        var count = 0;
-        var horizontalStackView = newHorizontalStackView()
-        let rows: Double = ceil(Double(trackers.count + 1) / 2.0)
-        let height = (rows * 60) + ((rows - 1) * 15)
-        trackersStackView.heightAnchor.constraint(equalToConstant: CGFloat(rows))
-        trackersHeightConstraint.constant = CGFloat(height)
-        trackersStackView.layoutIfNeeded()
-        //updateViewConstraints()
+        // Set the title of the view
+        viewTitle.text = stackName
         
-        for tracker in trackers {
-            count += 1
+        // Set up the stack views
+        addItemsToStackView(stackView: trackersStackView, stackHeight: trackersHeight, items: trackers, defaultButtonTitle: "+ Add Tracker")
+        addItemsToStackView(stackView: checklistStackView, stackHeight: checklistHeight, items: checklist, defaultButtonTitle: "+ Add Checklist")
+    }
+    
+    func addItemsToStackView(stackView: UIStackView, stackHeight: NSLayoutConstraint, items: [String], defaultButtonTitle: String){
+        
+        var counter = 0;
+        var loopCount = 0;
+        var horizontalStackView = newHorizontalStackView(stackView: stackView)
 
+        setStackViewHeight(stackView: stackView, stackHeight: stackHeight, count: items.count)
+        
+        for item in items {
+            counter += 1
+            loopCount += 1
+            
             let button = UIButton()
-            button.setTitle(tracker, for: .normal)
+            button.setTitle(item, for: .normal)
             button.setTitleColor(UIColor.black, for: .normal)
             button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 12)
             button.backgroundColor = UIColor.white.withAlphaComponent(0.75)
             
             horizontalStackView.addArrangedSubview(button)
             
-            if count == 2 {
-                count = 0
-                trackersStackView.addArrangedSubview(horizontalStackView)
-                horizontalStackView = newHorizontalStackView()
+            if counter == 2 {
+                counter = 0
+                stackView.addArrangedSubview(horizontalStackView)
+                if loopCount != items.count {
+                    horizontalStackView = newHorizontalStackView(stackView: stackView)
+                }
             }
         }
-        // If odd number that add the Add Tile to the same horizontal view
-        if trackers.count % 2 == 0 {
-            horizontalStackView = newHorizontalStackView()
-        }
-        let trackerView = UIView()
-        trackerView.backgroundColor = UIColor.white.withAlphaComponent(0.25)
-        horizontalStackView.addArrangedSubview(trackerView)
-        let clearView = UIView()
-        //trackerView.backgroundColor = UIColor.clear
-        horizontalStackView.addArrangedSubview(clearView)
-        trackersStackView.addArrangedSubview(horizontalStackView)
-        
         // Add the default Add Tracker button
+        if items.count % 2 == 0 {
+            horizontalStackView = newHorizontalStackView(stackView: stackView)
+        }
         
+        let button = UIButton()
+        button.setTitle(defaultButtonTitle, for: .normal)
+        button.setTitleColor(UIColor.white, for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 12)
+        button.backgroundColor = UIColor.white.withAlphaComponent(0.25)
+        button.addTarget(self, action: #selector(StackDetailsViewController.defaultButtonClicked(_:)), for: .touchUpInside)
+        
+        horizontalStackView.addArrangedSubview(button)
+        
+        if items.count % 2 == 0 {
+            let clearView = UIView()
+            horizontalStackView.addArrangedSubview(clearView)
+        }
+        
+        stackView.addArrangedSubview(horizontalStackView)
     }
     
-    func newHorizontalStackView() -> UIStackView {
+    @objc func defaultButtonClicked(_ sender: UIButton) {
+        if sender.titleLabel?.text == "+ Add Tracker"{
+            performSegue(withIdentifier: "addTracker", sender: self)
+        } else {
+            performSegue(withIdentifier: "addChecklist", sender: self)
+        }
+    }
+    
+    func setStackViewHeight(stackView: UIStackView, stackHeight: NSLayoutConstraint, count: Int){
+        let rows: Double = ceil(Double(count + 1) / 2.0)
+        let height = (rows * 60) + ((rows - 1) * 15)
+        
+        stackHeight.constant = CGFloat(height)
+        stackView.layoutIfNeeded()
+    }
+    
+    func newHorizontalStackView(stackView: UIStackView) -> UIStackView {
         let newStackView = UIStackView()
         newStackView.translatesAutoresizingMaskIntoConstraints = false
         newStackView.axis = .horizontal
@@ -75,9 +125,8 @@ class StackDetailsViewController: UIViewController {
         newStackView.alignment = .fill
         
         newStackView.heightAnchor.constraint(equalToConstant: 60)
-        newStackView.leadingAnchor.constraint(equalTo: trackersStackView.leadingAnchor, constant: 0)
-        newStackView.trailingAnchor.constraint(equalTo: trackersStackView.trailingAnchor, constant: 0)
-        //newStackView.topAnchor.constraint(equalTo: trackersStackView.topAnchor, constant: 0)
+        newStackView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 0)
+        newStackView.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: 0)
         return newStackView
     }
 }

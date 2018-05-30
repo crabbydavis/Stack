@@ -1,16 +1,20 @@
 PODS:
   - SVProgressHUD (2.2.5)
+  - Toaster (2.1.1)
 
 DEPENDENCIES:
   - SVProgressHUD
+  - Toaster
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - SVProgressHUD
+    - Toaster
 
 SPEC CHECKSUMS:
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
+  Toaster: a6c9532de1ded8105e77376f7dffeb2e12b46dbb
 
-PODFILE CHECKSUM: 3be0152afa2f2945e1af80e7a4624d451aab2d80
+PODFILE CHECKSUM: bc8b9d832481d13f595fa8ca4a17a9c3063a76db
 
 COCOAPODS: 1.5.2

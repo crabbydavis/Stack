@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleDisplayName</key>
+	<string>Stack Trackers</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -17,15 +19,21 @@
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>4</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>Need access to bluetooth to connect to trackers</string>
+	<key>NSCameraUsageDescription</key>
+	<string>We user your camera to add photos of your belongings</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>We use your location to help you find your belongings</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>We use your location to help you find your belongings</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>We user your camera to add photos of your belongings</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>We user your camera to add photos of your belongings</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>

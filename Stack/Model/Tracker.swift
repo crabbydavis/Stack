@@ -8,15 +8,23 @@
 
 import Foundation
 import CoreLocation
+import UIKit
 
 class Tracker: NSObject, NSCoding {
     
     var nearby: Bool
     var beaconRegion: CLBeaconRegion
-
+    var image = UIImage()
+    
     init(uuidString: String, beaconMajor: UInt16, beaconMinor: UInt16, beaconIdentifier: String, beaconNearby: Bool) {
         let beaconUUID = UUID.init(uuidString: uuidString)
         beaconRegion =  CLBeaconRegion(proximityUUID: beaconUUID!, major: beaconMajor, minor: beaconMinor, identifier: beaconIdentifier)
+        nearby = beaconNearby
+    }
+    
+    init(uuidString: String, beaconIdentifier: String, beaconNearby: Bool) {
+        let beaconUUID = UUID.init(uuidString: uuidString)
+        beaconRegion =  CLBeaconRegion(proximityUUID: beaconUUID!, identifier: beaconIdentifier)
         nearby = beaconNearby
     }
     
