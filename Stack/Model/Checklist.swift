@@ -13,8 +13,8 @@ class Checklist {
     
     var name: String = ""
     var nearby: Bool = false
-    var image = UIImage()
-    
+    var image: UIImage?
+
     init(checklistName: String){
         name = checklistName
     }

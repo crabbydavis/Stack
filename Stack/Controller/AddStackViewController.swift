@@ -11,6 +11,8 @@ import UIKit
 
 class AddStackViewController: UIViewController, UITextFieldDelegate {
     
+    var gotPhoto: Bool = false
+    
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var nameView: UIView!
     
@@ -20,6 +22,7 @@ class AddStackViewController: UIViewController, UITextFieldDelegate {
         CameraHandler.shared.imagePickedBlock = { (image) in
             /* get your image here */
             self.photoButton.setImage(image, for: .normal)
+            self.gotPhoto = true
         }
     }
     
@@ -30,7 +33,11 @@ class AddStackViewController: UIViewController, UITextFieldDelegate {
         
         if let stackName = nameTextField.text {
             let newStack: Stack = Stack(stackName: stackName)
-            //StacksManager.stacks.append(newStack)
+            if gotPhoto {
+                if let stackImage = photoButton.image(for: .normal) {
+                    newStack.image = stackImage
+                }
+            }
             StacksManager.stacks.updateValue(newStack, forKey: stackName)
             
             performSegue(withIdentifier: "showStackDetails", sender: self)

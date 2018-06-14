@@ -38,6 +38,7 @@ class AddTrackerViewController: UIViewController, UIPickerViewDelegate, UIPicker
     var pickerView = UIPickerView()
     var defaultStack = ""
     var item = ItemType.Tracker
+    var gotPhoto: Bool = false
     
     @IBOutlet weak var nameView: UIView!
     @IBOutlet weak var stackView: UIView!
@@ -47,10 +48,10 @@ class AddTrackerViewController: UIViewController, UIPickerViewDelegate, UIPicker
     @IBOutlet weak var cameraButton: UIButton!
     @IBAction func goToCamera(_ sender: UIButton) {
         CameraHandler.shared.showActionSheet(vc: self)
-        //CameraHandler.shared.showActionSheet(vc: self)
         CameraHandler.shared.imagePickedBlock = { (image) in
             /* get your image here */
             self.cameraButton.setImage(image, for: .normal)
+            self.gotPhoto = true
         }
     }
     
@@ -69,11 +70,19 @@ class AddTrackerViewController: UIViewController, UIPickerViewDelegate, UIPicker
     @IBAction func saveItem(_ sender: UIButton) {
         if item == ItemType.Tracker {
             let tracker = Tracker(uuidString: "B9407F30-F5F8-466E-AFF9-25556B57FE6D", beaconIdentifier: nameTextField.text!, beaconNearby: true)
+            if gotPhoto {
+                if let trackerImage = cameraButton.image(for: .normal){
+                    tracker.image = trackerImage
+                }
+            }
             // Start monitoring the region
             StacksManager.stacks[stackTextField.text!]?.trackers.updateValue(tracker, forKey: nameTextField.text!)
             
         } else {
             let checklist = Checklist(checklistName: nameTextField.text!)
+            if let checklistImage = cameraButton.image(for: .normal){
+                checklist.image = checklistImage
+            }
             StacksManager.stacks[stackTextField.text!]?.checklist.updateValue(checklist, forKey: nameTextField.text!)
         }
         performSegue(withIdentifier: "saveItem", sender: self)
@@ -112,6 +121,8 @@ class AddTrackerViewController: UIViewController, UIPickerViewDelegate, UIPicker
         
         cameraButton.layer.cornerRadius = 71.5
         cameraButton.layer.masksToBounds = true
+        
+        
     }
     
     // MARK: - Picker View Delegate Methods

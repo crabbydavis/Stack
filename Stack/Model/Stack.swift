@@ -15,7 +15,8 @@ class Stack {
     var name: String = ""
     var trackers: [String : Tracker] = [:]
     var checklist: [String: Checklist] = [:]
-    var image = UIImage()
+    var image: UIImage?
+    var hasDefaultImage: Bool = true
     
     init(stackName: String){
         name = stackName
