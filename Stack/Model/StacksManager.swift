@@ -9,6 +9,7 @@
 import Foundation
 
 class StacksManager {
+    
     static var stacks: [String: Stack] = [:]
     static var geofences: [String : Geofence] = [:]
 }

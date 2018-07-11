@@ -9,7 +9,7 @@
 import Foundation
 import CoreLocation
 
-class Geofence {
+class Geofence: NSObject, NSCoding {
     
     var inGeofence: Bool
     var region: CLCircularRegion
@@ -17,5 +17,16 @@ class Geofence {
     init(insideGeofence: Bool, circularRegion: CLCircularRegion) {
         inGeofence = insideGeofence
         region = circularRegion
+    }
+    
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(inGeofence, forKey: "inGeofence")
+        aCoder.encode(region, forKey: "region")
+    }
+    
+    required convenience init?(coder aDecoder: NSCoder) {
+        let inGeofence = aDecoder.decodeBool(forKey: "inGeofence")
+        let region = aDecoder.decodeObject(forKey: "region") as! CLCircularRegion
+        self.init(insideGeofence: inGeofence, circularRegion: region)
     }
 }

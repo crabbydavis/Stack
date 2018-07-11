@@ -100,21 +100,17 @@ class StacksViewController: UIViewController {
             button.setTitleColor(UIColor.black, for: .normal)
             button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 12)
             button.backgroundColor = UIColor.white.withAlphaComponent(0.75)
-            //button.addTarget(self, action: #selector(StacksViewController.stackClicked(_:)), for: .touchUpInside)
-            //button.addTarget(self, action: #selector(StacksViewController.addStackClicked(_:)), for: .touchUpInside)
-
+            
+            let imageButton = UIButton()
             if let image = stack.image {
-                let itemImage = UIImageView(image: image)
-                horizontalStackView.addArrangedSubview(itemImage)
-            } else {
-                let newButton = UIButton()
-                newButton.setTitle(stack.name, for: .normal)
-                newButton.setTitleColor(UIColor.clear, for: .normal)
-
-                newButton.addTarget(self, action: #selector(StacksViewController.stackClicked(_:)), for: .touchUpInside)
-                horizontalStackView.addArrangedSubview(newButton)
-                //horizontalStackView.addArrangedSubview(UIView())
+                imageButton.setImage(image, for: .normal)
             }
+            imageButton.contentMode = .scaleAspectFit
+            imageButton.setTitle(stack.name, for: .normal)
+            imageButton.setTitleColor(UIColor.clear, for: .normal)
+            imageButton.addTarget(self, action: #selector(StacksViewController.stackClicked(_:)), for: .touchUpInside)
+            horizontalStackView.addArrangedSubview(imageButton)
+            
             overlayhorizontalStackView.addArrangedSubview(button)
             
             // If there the row is full then add another horizontal stack view
@@ -159,15 +155,16 @@ class StacksViewController: UIViewController {
     }
     
     @objc func stackClicked(_ sender: UIButton) {
+        print("Stack Clicked")
         if let title = sender.titleLabel?.text{
             clickedStackTitle = title
         }
-        performSegue(withIdentifier: "goToStack", sender: self)
+        performSegue(withIdentifier: "goToStackDetails", sender: self)
     }
     
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "goToStack" {
+        if segue.identifier == "goToStackDetails" {
             let stackDetailsVC = segue.destination as! StackDetailsViewController
             stackDetailsVC.stackName = clickedStackTitle
         }

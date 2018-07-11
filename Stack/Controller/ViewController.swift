@@ -99,28 +99,25 @@ class ViewController: UIViewController, CLLocationManagerDelegate, CBCentralMana
     }
     
     func monitorBeaconRegion() {
-        let tracker1 = Tracker(uuidString: "B9407F30-F5F8-466E-AFF9-25556B57FE6D", beaconMajor: 8725, beaconMinor: 7, beaconIdentifier: "charger", beaconNearby: true)
-        let tracker2 = Tracker(uuidString: "B9407F30-F5F8-466E-AFF9-25556B57FE6D", beaconMajor: 8725, beaconMinor: 2, beaconIdentifier: "blueberry", beaconNearby: false)
+        //let tracker1 = Tracker(uuidString: "B9407F30-F5F8-466E-AFF9-25556B57FE6D", beaconMajor: 8725, beaconMinor: 7, beaconIdentifier: "charger", beaconNearby: true)
+        //let tracker2 = Tracker(uuidString: "B9407F30-F5F8-466E-AFF9-25556B57FE6D", beaconMajor: 8725, beaconMinor: 2, beaconIdentifier: "blueberry", beaconNearby: false)
         //let tracker3 = Tracker(uuidString: "B9407F30-F5F8-466E-AFF9-25556B57FE6D", beaconMajor: 8725, beaconMinor: 1, beaconIdentifier: "home", beaconNearby: true)
-        let tracker4 = Tracker(uuidString: "B9407F30-F5F8-466E-AFF9-25556B57FE6D", beaconMajor: 8725, beaconMinor: 5, beaconIdentifier: "bike", beaconNearby: true)
-        let tracker5 = Tracker(uuidString: "B9407F30-F5F8-466E-AFF9-25556B57FE6D", beaconMajor: 8725, beaconMinor: 11, beaconIdentifier: "door", beaconNearby: true)
+        //let tracker4 = Tracker(uuidString: "B9407F30-F5F8-466E-AFF9-25556B57FE6D", beaconMajor: 8725, beaconMinor: 5, beaconIdentifier: "bike", beaconNearby: true)
+        //let tracker5 = Tracker(uuidString: "B9407F30-F5F8-466E-AFF9-25556B57FE6D", beaconMajor: 8725, beaconMinor: 11, beaconIdentifier: "door", beaconNearby: true)
         
-        let tracker6 = Tracker(uuidString: "B9407F30-F5F8-466E-AFF9-25556B57FE6D", beaconMajor: 17185, beaconIdentifier: "DevBoard", beaconNearby: true)
+        let circleTracker1 = Tracker(uuidString: "B9407F30-F5F8-466E-AFF9-25556B57FE6D", beaconMajor: 1, beaconMinor: 1, beaconIdentifier: "backpack", beaconNearby: true)
+        let circleTracker2 = Tracker(uuidString: "B9407F30-F5F8-466E-AFF9-25556B57FE6D", beaconMajor: 1, beaconMinor: 2, beaconIdentifier: "charger", beaconNearby: true)
+        let circleTracker3 = Tracker(uuidString: "B9407F30-F5F8-466E-AFF9-25556B57FE6D", beaconMajor: 1, beaconMinor: 3, beaconIdentifier: "keys", beaconNearby: true)
         
         // Add trackers to the shared trackers
-        //Trackers.sharedTrackers.updateValue(tracker1, forKey: tracker1.beaconRegion.identifier)
-        Trackers.sharedTrackers.updateValue(tracker6, forKey: tracker6.beaconRegion.identifier)
-        //Trackers.sharedTrackers.updateValue(tracker4, forKey: tracker4.beaconRegion.identifier)
-        //Trackers.sharedTrackers.updateValue(tracker5, forKey: tracker5.beaconRegion.identifier)
-        //Trackers.sharedTrackers.updateValue(tracker6, forKey: tracker6.beaconRegion.identifier)
-        
+        Trackers.sharedTrackers.updateValue(circleTracker1, forKey: circleTracker1.beaconRegion.identifier)
+        Trackers.sharedTrackers.updateValue(circleTracker2, forKey: circleTracker2.beaconRegion.identifier)
+        Trackers.sharedTrackers.updateValue(circleTracker3, forKey: circleTracker3.beaconRegion.identifier)
+
         // Monitor the trackers
-        locationManager.stopMonitoring(for: tracker1.beaconRegion)
-        locationManager.stopMonitoring(for: tracker2.beaconRegion)
-        locationManager.stopMonitoring(for: tracker4.beaconRegion)
-        //locationManager.startMonitoring(for: tracker5.beaconRegion)
-        locationManager.stopMonitoring(for: tracker5.beaconRegion)
-        locationManager.startMonitoring(for: tracker6.beaconRegion)
+        locationManager.startMonitoring(for: circleTracker1.beaconRegion)
+        locationManager.startMonitoring(for: circleTracker2.beaconRegion)
+        locationManager.startMonitoring(for: circleTracker3.beaconRegion)
     }
     
     // MARK: - Location Manager

@@ -22,6 +22,7 @@ class AddStackViewController: UIViewController, UITextFieldDelegate {
         CameraHandler.shared.imagePickedBlock = { (image) in
             /* get your image here */
             self.photoButton.setImage(image, for: .normal)
+            self.photoButton.contentMode = .center
             self.gotPhoto = true
         }
     }

@@ -28,10 +28,11 @@ class StackDetailsViewController: UIViewController {
     @IBOutlet weak var overlayChecklistHeight: NSLayoutConstraint!
     
     
-    var trackers = [String:UIImage?]()//["Gloves","Goggles","Gloves","Goggles"]//,"Boots","Helmet","Snowboard"]
-    var checklists = [String:UIImage?]()//["Pass", "Glasses"]
+    var trackers = [String:UIImage?]()
+    var checklists = [String:UIImage?]()
     var stackName: String = ""
     var stack: Stack?
+    var tappedItemName: String = ""
     
     @IBOutlet weak var viewTitle: UILabel!
     override func viewDidLoad() {
@@ -40,6 +41,28 @@ class StackDetailsViewController: UIViewController {
     
     // Initialize UI here because view may not get destroyed before viewing again
     override func viewWillAppear(_ animated: Bool) {
+       
+        // First clear whatever is currently showing
+        for subview in trackersStackView.arrangedSubviews {
+            trackersStackView.removeArrangedSubview(subview)
+            subview.removeFromSuperview()
+        }
+        for subview in checklistStackView.arrangedSubviews {
+            checklistStackView.removeArrangedSubview(subview)
+            subview.removeFromSuperview()
+        }
+        for subview in overlayTrackersStackView.arrangedSubviews {
+            overlayTrackersStackView.removeArrangedSubview(subview)
+            subview.removeFromSuperview()
+        }
+        for subview in overlayChecklistStackView.arrangedSubviews {
+            overlayChecklistStackView.removeArrangedSubview(subview)
+            subview.removeFromSuperview()
+        }
+        
+        // Clear and then re-create the current and other stacks
+        trackers.removeAll()
+        checklists.removeAll()
         if let stack = StacksManager.stacks[stackName] {
             for (identifier, tracker) in  stack.trackers {
                 trackers.updateValue(tracker.image, forKey: identifier)
@@ -82,12 +105,16 @@ class StackDetailsViewController: UIViewController {
             button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 12)
             button.backgroundColor = UIColor.white.withAlphaComponent(0.75)
             
+            let imageButton = UIButton()
             if let image = itemImage {
-                let itemImage = UIImageView(image: image)
-                horizontalStackView.addArrangedSubview(itemImage)
-            } else {
-                horizontalStackView.addArrangedSubview(UIView())
+                imageButton.setImage(image, for: .normal)
+                imageButton.contentMode = .scaleAspectFit
             }
+            imageButton.setTitle(itemName, for: .normal)
+            imageButton.setTitleColor(UIColor.clear, for: .normal)
+            imageButton.addTarget(self, action: #selector(StackDetailsViewController.itemClicked(_:)), for: .touchUpInside)
+            horizontalStackView.addArrangedSubview(imageButton)
+
             overlayHorizontalStackView.addArrangedSubview(button)
             
             if counter == 2 {
@@ -123,6 +150,21 @@ class StackDetailsViewController: UIViewController {
         
         stackView.addArrangedSubview(horizontalStackView)
         overlayStackView.addArrangedSubview(overlayHorizontalStackView)
+    }
+    
+    @objc func itemClicked(_ sender: UIButton) {
+        if let name = sender.titleLabel?.text {
+            tappedItemName = name
+        }
+        performSegue(withIdentifier: "showItemDetails", sender: self)
+    }
+    
+    // MARK: - Navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "showItemDetails" {
+            let addTrackerVC = segue.destination as! AddTrackerViewController
+            addTrackerVC.itemName = tappedItemName
+        }
     }
     
     @objc func defaultButtonClicked(_ sender: UIButton) {

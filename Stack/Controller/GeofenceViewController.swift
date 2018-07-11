@@ -94,9 +94,10 @@ class GeofenceViewController: UIViewController, MKMapViewDelegate, CLLocationMan
         //StacksManager.geofences.updateValue(<#T##value: Geofence##Geofence#>, forKey: <#T##String#>)
         if let visualGeofence = geofenceCircle {
             let region = CLCircularRegion(center: visualGeofence.coordinate, radius: visualGeofence.radius, identifier: nameTextField.text!)
-            let geofence = Geofence(insideGeofence: false, circularRegion: region)
+            locationManager.startMonitoring(for: region)
+            let geofence = Geofence(insideGeofence: true, circularRegion: region)
+            print("nameTextField: \(nameTextField.text!)")
             StacksManager.geofences.updateValue(geofence, forKey: nameTextField.text!)
-            
             ToastView.appearance().bottomOffsetPortrait = CGFloat(UIScreen.main.bounds.height * 0.5)
             ToastView.appearance().font = UIFont.systemFont(ofSize: 20)//UIFont(descriptor: "Roboto", size: 20)
             ToastView.appearance().backgroundColor = UIColor(red:0.12, green:0.76, blue:0.65, alpha:1.0)//1FC3A6
@@ -132,9 +133,9 @@ class GeofenceViewController: UIViewController, MKMapViewDelegate, CLLocationMan
     func initLocationManager(){
         locationManager.delegate = self
         //locationManager.requestAlwaysAuthorization() // Requesting to always have access to location
-        locationManager.allowsBackgroundLocationUpdates = true
-        locationManager.distanceFilter = kCLLocationAccuracyKilometer
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        //locationManager.allowsBackgroundLocationUpdates = true
+        //locationManager.distanceFilter = kCLLocationAccuracyKilometer
+        //locationManager.desiredAccuracy = kCLLocationAccuracyBest
     }
     
     func initMapView(){

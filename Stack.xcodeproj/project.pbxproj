@@ -28,6 +28,7 @@
 		7666855F20BD106200C797BB /* Stack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7666855E20BD106200C797BB /* Stack.swift */; };
 		7666856120BD11B200C797BB /* StacksManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7666856020BD11B200C797BB /* StacksManager.swift */; };
 		7666856320BD122500C797BB /* Geofence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7666856220BD122500C797BB /* Geofence.swift */; };
+		76EC270A20DDC67000F17C67 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 76EC270920DDC66F00F17C67 /* GoogleService-Info.plist */; };
 		820D77788A6F6D1FBE6EEA3B /* Pods_Stack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AF87E347275FA84E037CF8CB /* Pods_Stack.framework */; };
 /* End PBXBuildFile section */
 
@@ -56,6 +57,7 @@
 		7666855E20BD106200C797BB /* Stack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stack.swift; sourceTree = "<group>"; };
 		7666856020BD11B200C797BB /* StacksManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StacksManager.swift; sourceTree = "<group>"; };
 		7666856220BD122500C797BB /* Geofence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Geofence.swift; sourceTree = "<group>"; };
+		76EC270920DDC66F00F17C67 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		88EE0AF87463CE3ACED3C494 /* Pods-Stack.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Stack.release.xcconfig"; path = "Pods/Target Support Files/Pods-Stack/Pods-Stack.release.xcconfig"; sourceTree = "<group>"; };
 		AF87E347275FA84E037CF8CB /* Pods_Stack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Stack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -114,6 +116,7 @@
 				76272D9E20B145E20089F750 /* View */,
 				76272D9D20B145D70089F750 /* Model */,
 				76272D9720B145490089F750 /* Info.plist */,
+				76EC270920DDC66F00F17C67 /* GoogleService-Info.plist */,
 				76272DB020B146C30089F750 /* cow1.wav */,
 			);
 			path = Stack;
@@ -227,6 +230,7 @@
 			files = (
 				76272DAF20B146B20089F750 /* LaunchScreen.storyboard in Resources */,
 				76272DAD20B146940089F750 /* Assets.xcassets in Resources */,
+				76EC270A20DDC67000F17C67 /* GoogleService-Info.plist in Resources */,
 				76272DB120B146C30089F750 /* cow1.wav in Resources */,
 				76272DA120B146090089F750 /* Main.storyboard in Resources */,
 			);
@@ -260,13 +264,19 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Stack/Pods-Stack-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/Toaster/Toaster.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Toaster.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

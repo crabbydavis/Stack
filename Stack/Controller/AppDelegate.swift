@@ -7,7 +7,7 @@
 //
 
 import UIKit
-//import Firebase
+import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,8 +16,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let defaults = UserDefaults.standard
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        
+        print(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last! as String)
+        
         // Override point for customization after application launch.
-        //FirebaseApp.configure()
+        FirebaseApp.configure()
         //HomeViewController.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
         UIApplication.shared.statusBarStyle = .lightContent
         return true
@@ -32,6 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         defaults.set(Trackers.inGeofence, forKey: "inGeofence")
         UserDefaults.standard.synchronize()
          */
+        saveStackManager()
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
@@ -43,6 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         defaults.set(Trackers.inGeofence, forKey: "inGeofence")
         UserDefaults.standard.synchronize()
          */
+        saveStackManager()
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -67,12 +72,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
          */
+        loadStackManager()
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        //defaults.set(StacksManager, forKey: "StacksManager")
+        saveStackManager()
     }
 
-
+    func saveStackManager(){
+        let encodedStacks = NSKeyedArchiver.archivedData(withRootObject: StacksManager.stacks)
+        let encodedGeofences = NSKeyedArchiver.archivedData(withRootObject: StacksManager.geofences)
+        defaults.set(encodedStacks, forKey: "Stacks")
+        defaults.set(encodedGeofences, forKey: "Geofences")
+        UserDefaults.standard.synchronize()
+    }
+    
+    func loadStackManager(){
+        if let decodedStacksData  = UserDefaults.standard.object(forKey: "Stacks") as? Data {
+            if let decodedStacks = NSKeyedUnarchiver.unarchiveObject(with: decodedStacksData) as? [String : Stack] {
+                StacksManager.stacks = decodedStacks
+            }
+        }
+        if let decodedGeofencesData  = UserDefaults.standard.object(forKey: "Geofences") as? Data {
+            if let decodedGeofences = NSKeyedUnarchiver.unarchiveObject(with: decodedGeofencesData) as? [String : Geofence] {
+                StacksManager.geofences = decodedGeofences
+            }
+        }
+    }
 }
 
