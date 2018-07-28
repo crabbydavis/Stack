@@ -14,16 +14,41 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?// = WallpaperWindow()
     let defaults = UserDefaults.standard
+    // For Logging Purposes
+    let stderr1 = FileHandle.standardError
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        
         print(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last! as String)
         
         // Override point for customization after application launch.
         FirebaseApp.configure()
         //HomeViewController.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
         UIApplication.shared.statusBarStyle = .lightContent
+        
+        print("Opening path for logging")
+        redirectLogToDocuments()
+        
+        LocationManager.SharedManager.initialized = true
+        
+        print("*** Trying to print launchOptions ***")
+        if let launchingOptions = launchOptions {
+            for (launchKey, value) in launchingOptions{
+                print("Launch options key: \(launchKey) and value: \(value)")
+            }
+        }
+        
+        loadStackManager()
+        
         return true
+    }
+    
+    func redirectLogToDocuments() {
+        let allPaths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+        let documentsDirectory = allPaths.first!
+        let pathForLog = documentsDirectory.appendingFormat("/testingLogs1.txt")
+        freopen(pathForLog.cString(using: .utf8)!, "a+", stderr)
+        
+        log(logString: "Start! " + "\(Date())\n")
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -35,6 +60,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         defaults.set(Trackers.inGeofence, forKey: "inGeofence")
         UserDefaults.standard.synchronize()
          */
+        log(logString: "in applicationWillResignActive");
         saveStackManager()
     }
 
@@ -47,6 +73,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         defaults.set(Trackers.inGeofence, forKey: "inGeofence")
         UserDefaults.standard.synchronize()
          */
+        log(logString: "in applicationDidEnterBackground");
         saveStackManager()
     }
 
@@ -60,6 +87,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
         */
+        log(logString: "in applicationWillEnterForeground");
+        loadStackManager()
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
@@ -72,6 +101,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
          */
+        log(logString: "in applicationDidBecomeActive");
         loadStackManager()
     }
 
@@ -82,6 +112,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func saveStackManager(){
+        log(logString: "**Saving StackManager**")
         let encodedStacks = NSKeyedArchiver.archivedData(withRootObject: StacksManager.stacks)
         let encodedGeofences = NSKeyedArchiver.archivedData(withRootObject: StacksManager.geofences)
         defaults.set(encodedStacks, forKey: "Stacks")
@@ -90,6 +121,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func loadStackManager(){
+        log(logString: "**Loading StackManager**")
         if let decodedStacksData  = UserDefaults.standard.object(forKey: "Stacks") as? Data {
             if let decodedStacks = NSKeyedUnarchiver.unarchiveObject(with: decodedStacksData) as? [String : Stack] {
                 StacksManager.stacks = decodedStacks
@@ -100,6 +132,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 StacksManager.geofences = decodedGeofences
             }
         }
+    }
+    
+    func log(logString: String){
+        let newString = logString + "\n"
+        stderr1.write(newString.data(using: .utf8)!) // log to a file
+        print(logString) // log to the console
     }
 }
 

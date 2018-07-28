@@ -1,61 +1,46 @@
 //
-//  SettingsViewController.swift
+//  LocationManager.swift
 //  Stack
 //
-//  Created by Davis Crabb on 5/20/18.
+//  Created by Davis Crabb on 7/14/18.
 //  Copyright © 2018 Davis Crabb. All rights reserved.
 //
 
 import Foundation
-import UIKit
-// Imports for notifications
-import UserNotifications
-import Toaster
-// Imports to monitor beacons
 import CoreLocation
-import AVFoundation
-import CoreBluetooth
+import UserNotifications
+import UIKit
 import Firebase
+import AVFoundation
 
-class SettingsViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDelegate {
-    /*
+
+class LocationManager: NSObject, CLLocationManagerDelegate {
+    
+    static let SharedManager = LocationManager()
+    var backgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
+    
     var database: DatabaseReference!
     let locationManager:CLLocationManager = CLLocationManager()
     let notificationCenter = UNUserNotificationCenter.current()
     var timer = Timer()
     var player: AVAudioPlayer?
     var startTime: DispatchTime?
-    @IBOutlet weak var TitleTextField: UITextField!
-    @IBOutlet weak var BodyTextField: UITextField!
-    @IBOutlet weak var TimeTextField: UITextField!
+    var initialized: Bool = false
+    let dateFormatter = DateFormatter()
     
-    @IBAction func sendNotification(_ sender: UIButton) {
+    // For Logging Purposes
+    let stderr1 = FileHandle.standardError
+    
+    override init() {
+        super.init()
+        print("Initializing the Location Manager")
         
-        // This fires in some amount of seconds
-        let time:Int? = Int(TimeTextField.text!)
+        // Init the date formatter
+        dateFormatter.dateStyle = .short
+        dateFormatter.timeStyle = .medium
         
-        sendNotification(title: TitleTextField.text!, body: BodyTextField.text!, time: time!)
-        ToastView.appearance().bottomOffsetPortrait = CGFloat(UIScreen.main.bounds.height * 0.5)
-        ToastView.appearance().font = UIFont.systemFont(ofSize: 20)//UIFont(descriptor: "Roboto", size: 20)
-        ToastView.appearance().backgroundColor = UIColor(red:0.12, green:0.76, blue:0.65, alpha:1.0)//1FC3A6
-        ToastView.appearance().textColor = UIColor.white
-        let toast = Toast(text: "Notification Queued", duration: Delay.short)
-        toast.show()
-    }
-    
-    
-    @IBAction func monitorBeacons(_ sender: UIButton) {
-        monitorBeaconRegions()
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
         setupNotifications()
-        TitleTextField.delegate = self
-        BodyTextField.delegate = self
-        TimeTextField.delegate = self
-        
-        //setupLocationManager()
+        setupLocationManager()
         database = Database.database().reference() // Initialize the db reference
     }
     
@@ -73,42 +58,36 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, CLLocationM
         locationManager.delegate = self
         locationManager.requestAlwaysAuthorization() // Requesting to always have access to location
         locationManager.allowsBackgroundLocationUpdates = true
-        locationManager.startUpdatingLocation() // Starts asking for the location
-        locationManager.distanceFilter = 50 // Only updates if distance has changed by 10m
+        locationManager.pausesLocationUpdatesAutomatically = true
+        locationManager.activityType = .other
+        if !CLLocationManager.significantLocationChangeMonitoringAvailable() {
+            // The service is not available.
+            return
+        }
+        locationManager.startMonitoringSignificantLocationChanges()
         print("Regions currently monitored:")
         for region in locationManager.monitoredRegions {
             print("\(region)")
         }
     }
     
-    // MARK: - Beacon Section
-    func monitorBeaconRegions() {
-        
-        // Create Trackers
-        let circleTracker1 = Tracker(uuidString: "B9407F30-F5F8-466E-AFF9-25556B57FE61", beaconMajor: 1, beaconMinor: 1, beaconIdentifier: "Beacon 1", beaconNearby: true)
-        let circleTracker2 = Tracker(uuidString: "B9407F30-F5F8-466E-AFF9-25556B57FE62", beaconMajor: 1, beaconMinor: 2, beaconIdentifier: "Beacon 2", beaconNearby: true)
-        let circleTracker3 = Tracker(uuidString: "B9407F30-F5F8-466E-AFF9-25556B57FE63", beaconMajor: 1, beaconMinor: 3, beaconIdentifier: "Beacon 3", beaconNearby: true)
-        let circleTracker4 = Tracker(uuidString: "B9407F30-F5F8-466E-AFF9-25556B57FE64", beaconMajor: 1, beaconMinor: 4, beaconIdentifier: "Beacon 4", beaconNearby: true)
-        
-        // Add trackers to the shared trackers
-        Trackers.sharedTrackers.updateValue(circleTracker1, forKey: circleTracker1.beaconRegion.identifier)
-        Trackers.sharedTrackers.updateValue(circleTracker2, forKey: circleTracker2.beaconRegion.identifier)
-        Trackers.sharedTrackers.updateValue(circleTracker3, forKey: circleTracker3.beaconRegion.identifier)
-        Trackers.sharedTrackers.updateValue(circleTracker4, forKey: circleTracker4.beaconRegion.identifier)
-
-        // Monitor the trackers
-        locationManager.startMonitoring(for: circleTracker1.beaconRegion)
-        locationManager.startMonitoring(for: circleTracker2.beaconRegion)
-        locationManager.startMonitoring(for: circleTracker3.beaconRegion)
-        locationManager.startMonitoring(for: circleTracker4.beaconRegion)
+    // MARK: - Logging
+    func log(logString: String){
+        stderr1.write(logString.data(using: .utf8)!) // log to a file
+        print(logString) // log to the console
+    }
+    
+    func logToFile(logString: String){
+        stderr1.write(logString.data(using: .utf8)!)
     }
     
     func logToFirebase(identifier: String, event: String){
-        
+        /*
         let date = Date()
         let calendar = Calendar.current
         let hour = calendar.component(.hour, from: date)
         let minutes = calendar.component(.minute, from: date)
+        let seconds = calendar.component(.second, from: date)
         let day = calendar.component(.day, from: date)
         let month = calendar.component(.month, from: date)
         let year = calendar.component(.year, from: date)
@@ -120,12 +99,41 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, CLLocationM
             dbSpot.setValue(["\(day)-\(month)-\(year) \(hour):\(minutes) \(event)-\(identifier)":"\(timeInterval)"])
             print("Going to set value in DB")
         } else {
-            dbSpot.setValue(["\(day)-\(month)-\(year) \(hour):\(minutes) \(identifier)":"\(event)"])
-            print("Going to set value in DB")
-        }
+        dbSpot.setValue(["\(day)-\(month)-\(year) \(hour):\(minutes):\(seconds) \(identifier)":"\(event)"])*/
+        //}
     }
     
     // MARK: - Location Manager Delegate Methods
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let lastLocation = locations.last!
+        log(logString: "Significant location change at \(dateFormatter.string(from: lastLocation.timestamp))")
+        
+        // Find all trackers that aren't neaby
+        // See if the determined state was for a tracker
+        for (_, stack) in StacksManager.stacks {
+            var missingTrackers = [String]()
+            for (name, tracker) in stack.trackers {
+                if(!tracker.nearby){
+                    missingTrackers.append(name)
+                }
+            }
+            // Don't notify the user if more than half of the stacks are missing
+            if(missingTrackers.count > stack.trackers.count / 2){
+                continue
+            } else {
+                var notificationString = "Missing: "
+                for name in missingTrackers {
+                    notificationString += name
+                    if(name != missingTrackers.last){
+                        notificationString += ", "
+                    }
+                }
+                sendNotification(title: "\(dateFormatter.string(from: lastLocation.timestamp))", body: notificationString, time: 1)
+            }
+        }
+        
+    }
+    
     // This gets generated after location.requestState
     func locationManager(_ manager: CLLocationManager, didDetermineState state: CLRegionState, for region: CLRegion) {
         print("didDetermineState: \(state)  for: \(region.identifier)")
@@ -133,6 +141,9 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, CLLocationM
         print("Hash Value \(state.hashValue)")
         let date = Date()
         print("Determined State at Time: \(date)")
+        
+        // For logging
+        //logToFile(logString: "\(Date()) : DidDetermineState : \(region.identifier) - \(state.rawValue) \n")
         
         // See if the determined state was for a geofence
         if let geofence = StacksManager.geofences[region.identifier] {
@@ -166,23 +177,28 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, CLLocationM
     }
     
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        print("Entered \(region.identifier)")
-        //logToFirebase(identifier: region.identifier, event: "Enter")
-
+        // For logging
+        logToFirebase(identifier: region.identifier, event: "EnterRegion")
+        log(logString: "\(dateFormatter.string(from: Date())) : \(region.identifier) : EnterRegion\n")
+        
         if let geofence = StacksManager.geofences[region.identifier] {
             geofence.inGeofence = true
         }
         for (_, stack) in StacksManager.stacks {
             if let tracker = stack.trackers[region.identifier] {
                 tracker.nearby = true
-                logToFirebase(identifier: region.identifier, event: "Enter")
+                logToFirebase(identifier: region.identifier, event: "EnterRegion - set tracker.nearby to true")
+                log(logString: "\(dateFormatter.string(from: Date())) : \(region.identifier) : EnterRegion - set tracker.nearby to true\n")
             }
         }
     }
     
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
-        print("region identifier \(region.identifier)")
-        logToFirebase(identifier: region.identifier, event: "Exit")
+        let timerLength: Double = 30
+        
+        // For logging
+        logToFirebase(identifier: region.identifier, event: "ExitRegion")
+        log(logString: "\(dateFormatter.string(from: Date())) : \(region.identifier) : ExitRegion\n")
         
         // Check to see if the region is a Geofence
         if let geofence = StacksManager.geofences[region.identifier] {
@@ -191,21 +207,27 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, CLLocationM
                 for(identifier, tracker) in stack.trackers {
                     if(tracker.nearby == false){
                         sendNotification(title: "You Left \(identifier)", body: "Left Item Behind", time: 1)
+                        log(logString: "\(dateFormatter.string(from: Date())) : \(region.identifier) : ExitRegion - send notification because of geofence\n")
+                        logToFirebase(identifier: region.identifier, event: "ExitRegion - send notification because of geofence")
                     }
                 }
             }
+        } else {
+            log(logString: "\(dateFormatter.string(from: Date())) : \(region.identifier) : Region couldn't be found in Geofences\n")
+            logToFirebase(identifier: region.identifier, event: "Region couldn't be found in Geofences")
         }
+        log(logString: "Num Stacks: \(StacksManager.stacks.count)\n")
         // Check to see if the region is an iBeacon
         for (_, stack) in StacksManager.stacks {
             if let tracker = stack.trackers[region.identifier] {
                 tracker.nearby = false
-                print("Exited \(region.identifier)")
                 let date = Date()
                 startTime = DispatchTime.now()
-                print("Exited: \(date)")
                 if(StacksManager.geofences.count == 0){
-                    print("No Geofence")
-                    timer = Timer.scheduledTimer(timeInterval: 8, target: self, selector: (#selector(SettingsViewController.debounceEvent)), userInfo: region.identifier, repeats: false)
+                    log(logString: "\(dateFormatter.string(from: Date())) : \(region.identifier) : ExitRegion - no geofences, start timer\n")
+                    logToFirebase(identifier: region.identifier, event: "ExitRegion - no geofences, start timer")
+                    registerBackgroundTask() // Start a background task to ensure we can send the notification
+                    timer = Timer.scheduledTimer(timeInterval: timerLength, target: self, selector: (#selector(LocationManager.debounceEvent)), userInfo: region.identifier, repeats: false)
                 } else {
                     // Check to make sure user isn't in any geofences
                     var inGeofence = false;
@@ -216,24 +238,35 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, CLLocationM
                     }
                     if(!inGeofence){
                         print("inGeofence False")
-                        timer = Timer.scheduledTimer(timeInterval: 8, target: self, selector: (#selector(SettingsViewController.debounceEvent)), userInfo: region.identifier, repeats: false)
+                        log(logString: "\(dateFormatter.string(from: Date())) : \(region.identifier) : ExitRegion - not in geofence, start timer\n")
+                        logToFirebase(identifier: region.identifier, event: "ExitRegion - no geofences, start timer")
+                        registerBackgroundTask() // Start a background task to ensure we can send the notification
+                        timer = Timer.scheduledTimer(timeInterval: timerLength, target: self, selector: (#selector(LocationManager.debounceEvent)), userInfo: region.identifier, repeats: false)
                     }
                 }
+            } else {
+                log(logString: "\(dateFormatter.string(from: Date())) : \(region.identifier) : Region couldn't be found in Trackers\n")
+                logToFirebase(identifier: region.identifier, event: "Region couldn't be found in Trackers")
             }
         }
     }
     
     @objc func debounceEvent(timer : Timer) {
         let identifier = timer.userInfo as? String ?? ""
+        log(logString: "\(dateFormatter.string(from: Date())) : \(identifier) : ExitRegion - end timer \n")
+        logToFirebase(identifier: identifier, event: "ExitRegion - end timer")
+
         timer.invalidate()
         for (_, stack) in StacksManager.stacks {
             if let tracker = stack.trackers[identifier] {
                 if(tracker.nearby == false){
+                    log(logString: "\(dateFormatter.string(from: Date())) : \(identifier) : Send Notification \n")
                     logToFirebase(identifier: identifier, event: "Send Notification")
                     sendNotification(title: "You Left \(identifier)", body: "Left Item Behind", time: 1)
                 }
             }
         }
+        endBackgroundTask()
     }
     
     func checkBeacons() {
@@ -248,11 +281,11 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, CLLocationM
     
     func sendNotification(title: String, body: String, time: Int) {
         print("In send notification")
-
+        
         let content = UNMutableNotificationContent()
         content.title = NSString.localizedUserNotificationString(forKey: title, arguments: nil)
         content.body = NSString.localizedUserNotificationString(forKey: body,
-            arguments: nil)
+                                                                arguments: nil)
         content.sound = UNNotificationSound.default()
         
         let trigger = UNTimeIntervalNotificationTrigger(timeInterval: TimeInterval(time), repeats: false)
@@ -260,6 +293,10 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, CLLocationM
         // Create the request object.
         let date = Date().description
         let request = UNNotificationRequest(identifier: date, content: content, trigger: trigger)
+        
+        log(logString: "\(dateFormatter.string(from: Date())) : Add Notification Request \n")
+        logToFirebase(identifier: title, event: "Add Notification Request")
+
         notificationCenter.add(request) // Schedule the request.
         //makeSound()
     }
@@ -287,11 +324,17 @@ class SettingsViewController: UIViewController, UITextFieldDelegate, CLLocationM
         }
     }
     
-    //MARK:- TextField Delegate Methods
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        TitleTextField.endEditing(true)
-        BodyTextField.endEditing(true)
-        TimeTextField.endEditing(true)
-        return true
-    }*/
+    // MARK: - Background Task
+    func registerBackgroundTask() {
+        backgroundTask = UIApplication.shared.beginBackgroundTask { [weak self] in
+            self?.endBackgroundTask()
+        }
+        assert(backgroundTask != UIBackgroundTaskInvalid)
+    }
+    
+    func endBackgroundTask() {
+        print("Background task ended.")
+        UIApplication.shared.endBackgroundTask(backgroundTask)
+        backgroundTask = UIBackgroundTaskInvalid
+    }
 }

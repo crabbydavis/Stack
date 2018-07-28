@@ -38,6 +38,7 @@ class ConnectTrackerViewController: UIViewController, CBCentralManagerDelegate, 
         let beaconUUID = UUID.init(uuidString: "B9407F30-F5F8-466E-AFF9-25556B57FE6D")
         let region = CLBeaconRegion(proximityUUID: beaconUUID!, identifier: "ChineseBeacons")
         locationManager.startRangingBeacons(in: region)
+        //LocationManager.SharedManager.locationManager.startRangingBeacons(in: region)
     }
     
     @IBAction func cancelPushed(_ sender: UIButton) {
@@ -157,6 +158,7 @@ class ConnectTrackerViewController: UIViewController, CBCentralManagerDelegate, 
             print("Minor: \(minor!)")
             
             locationManager.stopRangingBeacons(in: region)
+            //LocationManager.SharedManager.locationManager.stopRangingBeacons(in: region)
             SVProgressHUD.dismiss()
             
             performSegue(withIdentifier: "connectedTracker", sender: self)
@@ -217,9 +219,9 @@ class AddTrackerViewController: UIViewController, UIPickerViewDelegate, UIPicker
     
     @IBAction func saveItem(_ sender: UIButton) {
         if item == ItemType.Tracker {
-            //let tracker = Tracker(uuidString: "B9407F30-F5F8-466E-AFF9-25556B57FE6D", beaconIdentifier: nameTextField.text!, beaconNearby: true)
             let tracker = Tracker(uuidString: "B9407F30-F5F8-466E-AFF9-25556B57FE6D", beaconMajor: major!, beaconMinor: minor!, beaconIdentifier: nameTextField.text!, beaconNearby: true)
-            locationManager.startMonitoring(for: tracker.beaconRegion)
+            //locationManager.startMonitoring(for: tracker.beaconRegion)
+            LocationManager.SharedManager.locationManager.startMonitoring(for: tracker.beaconRegion)
             if gotPhoto {
                 if let trackerImage = cameraButton.image(for: .normal){
                     tracker.image = trackerImage
