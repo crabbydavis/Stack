@@ -15,7 +15,6 @@ import Toaster
 import CoreLocation
 import AVFoundation
 import CoreBluetooth
-import Firebase
 
 class SettingsViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDelegate {
     /*

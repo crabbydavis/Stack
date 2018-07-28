@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -21,7 +20,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last! as String)
         
         // Override point for customization after application launch.
-        FirebaseApp.configure()
         //HomeViewController.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
         UIApplication.shared.statusBarStyle = .lightContent
         

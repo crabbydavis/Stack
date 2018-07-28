@@ -8,7 +8,5 @@ target 'Stack' do
   # Pods for Stack
     pod 'SVProgressHUD'
     pod 'Toaster'
-    pod 'Firebase'
-    pod 'Firebase/Database'
 
 end
